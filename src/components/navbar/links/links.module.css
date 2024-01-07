@@ -15,7 +15,7 @@
     display: none;
 }
 
-.menuButton {
+.menuBar {
     display: none;
 }
 
@@ -28,8 +28,9 @@
         position: absolute;
         top: 100px;
         right: 0;
-        width: 50%;
+        width: 40%;
         height: calc(100vh - 100px);
+        background-color: var(--bg);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -37,10 +38,8 @@
         gap: 10px;
     }
 
-    .menuButton {
+    .menuBar {
         display: block;
         cursor: pointer;
-        font-size: 30px;
-        font-weight: bold;
     }
 }

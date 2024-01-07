@@ -1,6 +1,7 @@
 .container {
     display: flex;
     gap: 100px;
+    /* overflow-x: hidden; Remove this line */
 }
 
 .textContainer {
@@ -8,15 +9,16 @@
     display: flex;
     flex-direction: column;
     gap: 50px;
+    overflow-x: hidden; /* Add this line to hide overflow within .textContainer */
 }
 
 .title {
     font-size: 96px;
-
 }
 
 .desc {
-font-size: 20px;
+    font-size: 20px;
+    overflow-x: auto; /* Add this line to allow horizontal scrolling within .desc */
 }
 
 .buttons {
@@ -54,6 +56,10 @@ font-size: 20px;
 }
 
 @media (max-width: 768px) {
+    .imageContainer {
+        display: none;
+    }
+    
     .heroImg {
         display: none;
     }
