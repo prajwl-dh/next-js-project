@@ -48,3 +48,13 @@ font-size: 20px;
     flex: 1;
     position: relative;
 }
+
+.heroImg {
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .heroImg {
+        display: none;
+    }
+}
