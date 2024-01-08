@@ -1,40 +1,37 @@
 import Image from 'next/image'
 import styles from './singlePostPage.module.css'
+import { Suspense } from 'react'
+import { getSinglePost, getUser, getTimeStamp } from '@/lib/data'
 
 export default async function SinglePostPage({ searchParams }){
-    const getSinglePost = async () => {
-        const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${searchParams.id}`, {next: {revalidate: 1800}})
-        if(!response.ok){
-            throw new Error("Something went wrong")
-        }
-        const data = await response.json()
-        return data
-    }
-
-    const posts = await getSinglePost()
+    const posts = await getSinglePost(searchParams.id)
+    const user = await getUser(posts.userId)
+    const timestamp = await getTimeStamp(searchParams.id)
 
     return(
         <div className={styles.container}>
-            <div className={styles.imgContainer}>
-                <Image src='https://images.pexels.com/photos/5386829/pexels-photo-5386829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='' fill className={styles.img} />
-            </div>
-            <div className={styles.textContainer}>
-                <h1 className={styles.title}>{posts.title}</h1>
-                <div className={styles.detail}>
-                    <Image className={styles.avatar} src='https://images.pexels.com/photos/5386829/pexels-photo-5386829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='' width={50} height={50} />
-                    <div className={styles.detailText}>
-                        <span className={styles.detailTitle}>Author</span>
-                        <span className={styles.detailValue}>Prajwal Dhungana</span>
+            <Suspense fallback={<div>Loading...</div>}>
+                {posts.img &&<div className={styles.imgContainer}>
+                    <Image src={posts.img} alt='' fill className={styles.img} />
+                </div>}
+                <div className={styles.textContainer}>
+                    <h1 className={styles.title}>{posts.title}</h1>
+                    <div className={styles.detail}>
+                        <Image className={styles.avatar} src={posts.img ? posts.img : `/noavatar.png`} alt='' width={50} height={50} />
+                        <div className={styles.detailText}>
+                            <span className={styles.detailTitle}>Author</span>
+                            <span className={styles.detailValue}>{user.username}</span>
+                        </div>
+                        <div className={styles.detailText}>
+                            <span className={styles.detailTitle}>Published</span>
+                            <span className={styles.detailValue}>{timestamp.toString().slice(0,16)}</span>
+                        </div>
                     </div>
-                    <div className={styles.detailText}>
-                        <span className={styles.detailTitle}>Published</span>
-                        <span className={styles.detailValue}>01.01.2024</span>
+                    <div className={styles.content}>
+                        {posts.body}
                     </div>
                 </div>
-                <div className={styles.content}>
-                    {posts.body}
-                </div>
-            </div>
+            </Suspense>
         </div>
     )
 }
