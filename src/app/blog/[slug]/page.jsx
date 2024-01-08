@@ -3,6 +3,14 @@ import styles from './singlePostPage.module.css'
 import { Suspense } from 'react'
 import { getSinglePost, getUser, getTimeStamp } from '@/lib/data'
 
+export const generateMetadata = async ({ searchParams }) => {
+    const posts = await getSinglePost(searchParams.id)
+    return {
+        title: posts.title,
+        description: posts.desc
+    }
+}
+
 export default async function SinglePostPage({ searchParams }){
     const posts = await getSinglePost(searchParams.id)
     const user = await getUser(posts.userId)
@@ -28,7 +36,7 @@ export default async function SinglePostPage({ searchParams }){
                         </div>
                     </div>
                     <div className={styles.content}>
-                        {posts.body}
+                        {posts.desc}
                     </div>
                 </div>
             </Suspense>
